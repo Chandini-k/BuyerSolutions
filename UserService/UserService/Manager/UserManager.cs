@@ -8,33 +8,43 @@ using System.Threading.Tasks;
 
 namespace UserService.Manager
 {
-    public class UserManager:IUserManager
+    public class UserManager : IUserManager
     {
         private readonly IUserRepository _iuserRepository;
+        readonly List<Buyer> buyers = new List<Buyer>();
         public UserManager(IUserRepository iuserRepository)
         {
             _iuserRepository = iuserRepository;
         }
-        public async Task<bool> BuyerRegister(Buyer buyer)
+        public async Task<bool> BuyerRegister(BuyerRegister buyer)
         {
+            Buyer buyer1 = new Buyer();
+            var result = buyers.Where(i => i.Email.ToString() == buyer1.Email.ToString()).Select(i => i).ToList();
+            //var result = (from i in buyers select i).ToList();
+            if (result.Count>1)
+            {
+                return false;
+            }
+            else
+            {
+
                 bool user = await _iuserRepository.BuyerRegister(buyer);
                 return user;
-            
+            }
         }
 
         public async Task<Login> BuyerLogin(Login login)
         {
-                Buyer buyer=new Buyer();
-                Login login1 = await _iuserRepository.BuyerLogin(login);
-                if (buyer.Username == login.userName && buyer.Password == login.userPassword)
-                {
-                    return login1;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid");
-                    return login1;
-                }
+            Login login1 = await _iuserRepository.BuyerLogin(login);
+            if (login1!=null)
+            {
+                return login1;
+            }
+            else
+            {
+                Console.WriteLine("Invalid");
+                return null;
+            }
         }
 
     }

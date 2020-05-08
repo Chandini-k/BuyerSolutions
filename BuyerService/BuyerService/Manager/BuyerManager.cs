@@ -1,4 +1,5 @@
 ﻿using BUYERDBENTITY.Entity;
+using BUYERDBENTITY.Models;
 using BUYERDBENTITY.Repositories;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace BuyerService.Manager
         {
             _ibuyerRepository = ibuyerRepository;
         }
-        public async Task<bool> EditBuyerProfile(Buyer buyer)
+        public async Task<bool> EditBuyerProfile(BuyerData buyer)
         {
             bool user = await _ibuyerRepository.EditBuyerProfile(buyer);
             if (user)

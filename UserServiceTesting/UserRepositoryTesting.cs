@@ -14,7 +14,6 @@ namespace UserServiceTesting
     public class TestUserRepository
     {
         IUserRepository userRepository;
-        //IUserManager iUserManager;
         [SetUp]
         public void SetUp()
         {
@@ -30,18 +29,18 @@ namespace UserServiceTesting
         /// Testing register buyer
         /// </summary>
         [Test]
-        [TestCase(6785, "krish", "abcdefg@", "krish@gmail.com", "9358778295")]
-        [TestCase(9652, "sri", "abcdefg@", "sri@gmail.com", "9462623495")]
+        [TestCase(7373, "chinnu", "abcdefg2","9365778295","chinnu@gmail.com")]
+        [TestCase(6464, "cute", "abcdefg2", "9462753495", "cute@gmail.com")]
         [Description("testing buyer Register")]
-        public async Task RegisterBuyer_Successfull(int buyerId, string userName, string password, string email, string mobileNo)
+        public async Task RegisterBuyer_Successfull(int buyerId, string userName, string password, string mobileNo, string email)
         {
             try
             {
                 DateTime datetime = System.DateTime.Now;
-                var buyer = new Buyer { Bid = buyerId, Username = userName, Password = password, Email = email, Mobileno = mobileNo, Datetime = datetime };
-                await userRepository.BuyerRegister(buyer);
+                var buyer = new BuyerRegister { buyerId = buyerId, userName = userName, password = password, mobileNo = mobileNo, emailId=email,dateTime = datetime };
                 var mock = new Mock<IUserRepository>();
-                mock.Setup(x => x.BuyerRegister(buyer));
+                mock.Setup(x => x.BuyerRegister(buyer)).ReturnsAsync(true);
+                await userRepository.BuyerRegister(buyer);
                 var login = new Login { userName = userName, userPassword = password };
                 var result = await userRepository.BuyerLogin(login);
                 Assert.NotNull(result);
@@ -76,7 +75,7 @@ namespace UserServiceTesting
             {
                 var login = new Login { userName = userName, userPassword = password };
                 var result = await userRepository.BuyerLogin(login);
-                Assert.AreEqual(null, result);
+                Assert.IsNull(result);
             }
             catch (Exception e)
             {

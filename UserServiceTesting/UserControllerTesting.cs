@@ -1,11 +1,14 @@
 ﻿using BUYERDBENTITY.Entity;
 using BUYERDBENTITY.Models;
+using BUYERDBENTITY.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 using UserService.Controllers;
+using UserService.Manager;
 
 namespace UserServiceTesting
 {
@@ -14,25 +17,22 @@ namespace UserServiceTesting
     {
         UserController userController;
         [SetUp]
-        //public void SetUp()
-        //{
-        //    userController = new UserController();
-        //}
-        [Test]
-        [TestCase(6785, "krish", "abcdefg@", "krish@gmail.com", "9358778295")]
-        [TestCase(9652, "sri", "abcdefg@", "sri@gmail.com", "9462623495")]
-        [Description("testing buyer Register")]
-        public async Task RegisterBuyerController_Successfull(int buyerId, string userName, string password, string email, string mobileNo)
+        public void SetUp()
         {
-                DateTime datetime = System.DateTime.Now;
-                Buyer buyer = new Buyer { Bid = buyerId, Username = userName, Password = password, Email = email, Mobileno = mobileNo, Datetime = datetime };
-                await userController.Buyer(buyer);
-                var mock = new Mock<UserController>();
-                mock.Setup(x => x.Buyer(buyer));
-                var login = new Login { userName = userName, userPassword = password };
-                Task<IActionResult> result1 =  userController.BuyerLogin(login);
-               // var okResult = result as ObjectResult;
-                Assert.NotNull(result1);
+            userController = new UserController(new UserManager(new UserRepository(new BuyerContext())));
+        }
+        [Test]
+        [TestCase(1452,"milky","abcdefg2","9636737838","milky@gmail.com")]
+        public async Task Persons_Add(int buyerId, string userName, string password, string mobileNo, string email)
+        {
+            DateTime datetime = System.DateTime.Now;
+            var buyer = new BuyerRegister { buyerId = buyerId, userName = userName, password = password, mobileNo = mobileNo, emailId = email, dateTime = datetime };
+            var mock = new Mock<IUserManager>();
+            mock.Setup(x => x.BuyerRegister(buyer)).ReturnsAsync(true);
+            UserController userController1 = new UserController(mock.Object);
+            var result = await userController1.Buyer(buyer);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(true, result);
         }
 
     }

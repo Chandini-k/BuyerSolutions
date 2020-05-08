@@ -14,7 +14,7 @@ namespace BuyerServiceTesting
     public class TestUserRepository
     {
         IBuyerRepository buyerRepository;
-        //IUserManager iUserManager;
+        
         [SetUp]
         public void SetUp()
         {
@@ -78,7 +78,7 @@ namespace BuyerServiceTesting
             try
             {
                 Buyer buyer = await buyerRepository.GetBuyerProfile(4526);
-                buyer.Email = "sumabade@gmail.com";
+                buyer.Email = "sumabade23@gmail.com";
                 await buyerRepository.EditBuyerProfile(buyer);
                 Buyer buyer1 = await buyerRepository.GetBuyerProfile(4526);
                 var mock = new Mock<IBuyerRepository>();
@@ -100,7 +100,7 @@ namespace BuyerServiceTesting
             try
             {
                 Buyer buyer = await buyerRepository.GetBuyerProfile(4526);
-                buyer.Email = "sumabade@gmail.com";
+                buyer.Email = "sumab@gmail.com";
                 await buyerRepository.EditBuyerProfile(buyer);
                 Buyer buyer1 = await buyerRepository.GetBuyerProfile(3252);
                 var mock = new Mock<IBuyerRepository>();

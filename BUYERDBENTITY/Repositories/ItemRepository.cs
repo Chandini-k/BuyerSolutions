@@ -88,7 +88,8 @@ namespace BUYERDBENTITY.Repositories
         public async Task<int> GetCount(int bid)
         {
             var count=await _context.Cart.Where(e => e.Bid == bid).ToListAsync();
-            return count.Count();
+            int count1=count.Count();
+            return count1;
         }
 
         public async Task<List<Items>> GetItems()
@@ -105,24 +106,24 @@ namespace BUYERDBENTITY.Repositories
             return await _context.Items.Where(e => e.Price >= price && e.Price <= price1).ToListAsync();
         }
 
-        public Task<List<Purchasehistory>> Purchase(Login login)
+        public Task<List<Purchasehistory>> Purchase(int buyerId)
         {
-            return _context.Purchasehistory.Where(e => e.Bid == login.buyerId).ToListAsync();
+            return _context.Purchasehistory.Where(e => e.Bid == buyerId).ToListAsync();
         }
 
-        public async Task<List<Items>> Search(Product product)
+        public async Task<List<Items>> Search(string itemName)
         {
-            return await _context.Items.Where(e => e.Itemname == product.productName).ToListAsync();
+            return await _context.Items.Where(e => e.Itemname == itemName).ToListAsync();
         }
 
-        public async Task<List<Items>> SearchItemByCategory(ProductCategory productCategory)
+        public async Task<List<Items>> SearchItemByCategory(int categoryId)
         {
-            return await _context.Items.Where(e => e.Itemname == productCategory.categoryName).ToListAsync();
+            return await _context.Items.Where(e => e.Categoryid == categoryId).ToListAsync();
         }
 
-        public async Task<List<Items>> SearchItemBySubCategory(ProductSubCategory productSubCategory)
+        public async Task<List<Items>> SearchItemBySubCategory(int subCategoryId)
         {
-            return await _context.Items.Where(e => e.Itemname == productSubCategory.subCategoryName).ToListAsync();
+            return await _context.Items.Where(e => e.Subcategoryid == subCategoryId).ToListAsync();
         }
     }
 }

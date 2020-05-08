@@ -1,4 +1,5 @@
 ﻿using BUYERDBENTITY.Entity;
+using BUYERDBENTITY.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,7 @@ namespace BUYERDBENTITY.Repositories
 {
     public interface IBuyerRepository
     {
-        Task<bool> EditBuyerProfile(Buyer buyer);
+        Task<bool> EditBuyerProfile(BuyerData buyer);
         Task<Buyer> GetBuyerProfile(int bid);
     }
 }

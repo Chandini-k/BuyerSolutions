@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BUYERDBENTITY.Entity;
+using BUYERDBENTITY.Models;
 using BuyerService.Manager;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,9 @@ namespace BuyerService.Controllers
         {
             _iBuyerManager = iBuyerManager;
         }
-        [HttpPost]
+        [HttpPut]
         [Route("EditProfile")]
-        public async Task<IActionResult> EditBuyerProfile(Buyer buyer)
+        public async Task<IActionResult> EditBuyerProfile(BuyerData buyer)
         {
            return Ok(await _iBuyerManager.EditBuyerProfile(buyer));
            

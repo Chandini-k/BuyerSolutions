@@ -1,4 +1,5 @@
 ﻿using BUYERDBENTITY.Entity;
+using BUYERDBENTITY.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,11 +14,16 @@ namespace BUYERDBENTITY.Repositories
         {
             _context = context;
         }
-        public async Task<bool> EditBuyerProfile(Buyer buyer)
+        public async Task<bool> EditBuyerProfile(BuyerData buyer)
         {
-            _context.Update(buyer);
-            var user = await _context.SaveChangesAsync();
-            if (user > 0)
+            Buyer buyer1 = _context.Buyer.Find(buyer.buyerId);
+                buyer1.Username = buyer.userName;
+                buyer1.Password = buyer.password;
+                buyer1.Mobileno = buyer.mobileNo;
+                buyer1.Email = buyer.emailId;
+            _context.Buyer.Update(buyer1);
+            var user=await _context.SaveChangesAsync();
+            if (user>0)
             {
                 return true;
             }

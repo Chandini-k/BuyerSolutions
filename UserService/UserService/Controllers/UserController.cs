@@ -14,9 +14,12 @@ namespace UserService.Controllers
         private readonly IUserManager _iUserManager;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserManager iUserManager, ILogger<UserController> logger)
+        public UserController(IUserManager iUserManager)
         {
             _iUserManager = iUserManager;
+        }
+        public UserController(ILogger<UserController> logger)
+        {
             _logger = logger;
         }
         /// <summary>
@@ -26,21 +29,21 @@ namespace UserService.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> Buyer(Buyer buyer)
+        public async Task<IActionResult> Buyer(BuyerRegister buyer)
         {
-           
-                _logger.LogInformation("Register");
-            if(buyer is null)
+
+            _logger.LogInformation("Register");
+            if (buyer is null)
             {
-                return BadRequest("Buyer is null");
+                return BadRequest("Buyer already exists");
             }
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
             _logger.LogInformation("Succesfully Registered");
-             return Ok(await _iUserManager.BuyerRegister(buyer));
-            
+            return Ok(await _iUserManager.BuyerRegister(buyer));
+
         }
         /// <summary>
         /// Login Buyer
@@ -52,15 +55,15 @@ namespace UserService.Controllers
         [Route("Login")]
         public async Task<IActionResult> BuyerLogin(Login login)
         {
-                _logger.LogInformation("User Login");
+            _logger.LogInformation("User Login");
 
-                Login login1 = await _iUserManager.BuyerLogin(login);
-               if(login1==null)
-               {
+            Login login1 = await _iUserManager.BuyerLogin(login);
+            if (login1 == null)
+            {
                 return Ok("Invalid User");
-               }
+            }
             _logger.LogInformation($"Welcome{login.userName}");
-                return Ok(login);
-           }
+            return Ok(login);
+        }
     }
 }

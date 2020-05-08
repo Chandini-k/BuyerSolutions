@@ -16,9 +16,19 @@ namespace BUYERDBENTITY.Repositories
             _context = context;
         }
 
-        public async Task<bool> BuyerRegister(Buyer buyer)
+        public async Task<bool> BuyerRegister(BuyerRegister buyer)
         {
-            _context.Buyer.Add(buyer);
+            Buyer buyer1 = new Buyer();
+            if(buyer!=null)
+            {
+                buyer1.Bid = buyer.buyerId;
+                buyer1.Username = buyer.userName;
+                buyer1.Password = buyer.password;
+                buyer1.Mobileno = buyer.mobileNo;
+                buyer1.Email = buyer.emailId;
+                buyer1.Datetime = buyer.dateTime;
+            }
+            _context.Buyer.Add(buyer1);
             var user = await _context.SaveChangesAsync();
             if (user > 0)
             {
@@ -33,14 +43,14 @@ namespace BUYERDBENTITY.Repositories
         public async Task<Login> BuyerLogin(Login login)
         {
              Buyer buyer = await _context.Buyer.SingleOrDefaultAsync(e => e.Username ==login.userName && e.Password == login.userPassword);
-            if (buyer.Username == login.userName && buyer.Password == login.userPassword)
+            if (buyer!=null)
             {
                 return login;
             }
             else
             {
                 Console.WriteLine("Not valid");
-                return login;
+                return null;
             }
 
         }
